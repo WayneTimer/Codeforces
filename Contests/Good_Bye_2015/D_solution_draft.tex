@@ -1,0 +1,347 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{bfseries}
+Description
+\end{bfseries}
+\\
+\\
+\\
+\begin{bfseries}
+1. Naive solution
+\end{bfseries}
+$O(n^3)$ \\
+\begin{center}
+"1234": \\
+$\Downarrow$ \\
+"1 2 3 4" \\
+"1 2 34" \\
+"1 234" \\
+"12 34" \\
+"1234" \\
+Five different ways \\
+\end{center}
+f[i][j]: str[i,j] be a unitary first one, then str[j+1,n] can be divide in how many ways that fit the problem description.\\
+\[
+f[i][j] =
+\left\{
+    \begin{array}{c c}
+        0, & if (str[i]=='0') \\
+        1, & if (j==n-1) \\
+        \sum_{k = j+j-i+1}^{n-1} f[j+1][k], & if (str[i,j]<str[j+1,j+j-i+1]) \\
+        \sum_{k = j+j-i+2}^{n-1} f[j+1][k], & if (str[i,j]>=str[j+1,j+j-i+1])
+    \end{array}
+\right.
+\]
+\\
+\[
+Ans = \sum_{k = 0}^{n-1} f[0][k]
+\]
+\\
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & \ & \ & \ \\
+        \cline{2-5}
+        1 & $\times$ & \ & \ & \ \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & \ & \ \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & \ \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & \ & \ & 1 \\
+        \cline{2-5}
+        1 & $\times$ & \ & \ & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & \ & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[i][n-1] = 1
+\]
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & \ & 0 & 1 \\
+        \cline{2-5}
+        1 & $\times$ & \ & 0 & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & 1 & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[2][2] = 1, (str[2] < str[3])
+\]
+\[
+f[1][2] = 0, (if str[1,2] < str[3,4] \ ?)
+\]
+\begin{center}
+(note: there is no str[3,4])
+\end{center}
+\[
+f[0][2] = 0
+\]
+\begin{center}
+(note: there is no str[3,5])
+\end{center}
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & 1 & 0 & 1 \\
+        \cline{2-5}
+        1 & $\times$ & 2 & 0 & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & 1 & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[1][1] =  f[2][2] + f[2][3] = 1 + 1 = 2, (str[1] < str[2])
+\]
+\[
+f[0][1] = f[2][3] = 1, (str[0,1] < str[2,3])
+\]
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & 3 & 1 & 0 & 1 \\
+        \cline{2-5}
+        1 & $\times$ & 2 & 0 & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & 1 & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[0][0] = f[1][1] + f[1][2] + f[1][3] = 2 + 0 + 1 = 3, (str[0] < str[1])
+\]
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\[
+Ans = f[0][0] + f[0][1] + f[0][2] + f[0][3] = 5
+\]
+\\
+\\
+\begin{bfseries}
+2. Promotion 1.
+\end{bfseries}
+$O(n^2)$ \\
+\\
+Let $f[i][j] = \sum_{k=j}^{n-1} f[i][k]$, that is \\
+\\
+\[
+f[i][j] =
+\left\{
+    \begin{array}{c c}
+        0, & if (str[i]=='0' \ \&\& \ j==n-1) \\
+        f[i][j+1], & if (str[i]=='0') \\
+        1, & if (str[i]!='0' \ \&\& \ j==n-1) \\
+        f[i][j+1] + f[j+1][j+j-i+1], & if (str[i,j]<str[j+1,j+j-i+1]) \\
+        f[i][j+1] + f[j+1][j+j-i+2], & if (str[i,j]>=str[j+1,j+j-i+1])
+    \end{array}
+\right.
+\]
+\\
+\[
+Ans = f[0][0]
+\]
+\\
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & \ & \ & \ \\
+        \cline{2-5}
+        1 & $\times$ & \ & \ & \ \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & \ & \ \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & \ \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & \ & \ & 1 \\
+        \cline{2-5}
+        1 & $\times$ & \ & \ & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & \ & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[i][n-1] = 1
+\]
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & \ & 1 & 1 \\
+        \cline{2-5}
+        1 & $\times$ & \ & 1 & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & 2 & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[2][2] = f[2][3] + f[3][3] = 1 + 1 = 2, (str[2] < str[3])
+\]
+\[
+f[1][2] = f[1][3] = 1, (if str[1,2] < str[3,4] \ ?)
+\]
+\begin{center}
+(note: there is no str[3,4])
+\end{center}
+\[
+f[0][2] = f[0][3] = 1
+\]
+\begin{center}
+(note: there is no str[3,5])
+\end{center}
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & \ & 2 & 1 & 1 \\
+        \cline{2-5}
+        1 & $\times$ & 3 & 1 & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & 2 & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[1][1] =  f[1][2] + f[2][2] = 1 + 2 = 3, (str[1] < str[2])
+\]
+\[
+f[0][1] = f[0][2] + f[2][3] = 1 + 1 = 2, (str[0,1] < str[2,3])
+\]
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\begin{center}
+    \begin{tabular}{ r|c|c|c|c| }
+        \multicolumn{1}{r}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}\\
+        \cline{2-5}
+        0 & 5 & 2 & 1 & 1 \\
+        \cline{2-5}
+        1 & $\times$ & 3 & 1 & 1 \\
+        \cline{2-5}
+        2 & $\times$ & $\times$ & 2 & 1 \\
+        \cline{2-5}
+        3 & $\times$ & $\times$ & $\times$ & 1 \\
+        \cline{2-5}
+    \end{tabular}
+\end{center}
+
+\[
+f[0][0] = f[0][1] + f[1][1] = 2 + 3 = 5, (str[0] < str[1])
+\]
+
+\begin{center}
+$\Downarrow$
+\end{center}
+
+\[
+Ans = f[0][0] = 5
+\]
+\\
+\begin{bfseries}
+3. Promotion 2. Pre-Comparison(str[i,j], str[j+1,j+j-i+1]) \\
+\end{bfseries}
+\\
+Let s[i][j] denote the shift \begin{itshape}k\end{itshape} of the first different char of the string. \\
+That is,\\
+str[i]==str[j], str[i+1]==str[j+1], ..., str[i+k-1]==str[j+k-1], str[i+k]!=str[j+k] \\
+\[
+s[i][j] =
+\left\{
+    \begin{array}{c c}
+        0, & if (i==n \ || \ j==n) \\
+        0, & if (str[i]!=str[j]) \\
+        s[i+1][j+1]+1, & if (str[i]==str[j]) \\
+    \end{array}
+\right.
+\]
+\end{document}

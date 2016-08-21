@@ -10,7 +10,7 @@ Solution:
 Consider a>=3 (a^2>=9):
 1. a is odd, a^2 is also odd,
    then construct (c-b)==1, since a^2 is odd, we have a^2 = 2*p+1 = p + p+1, (a^2>=9, p>=4)
-   then we can aloways have c=p+1, b=p.
+   then we can always have c=p+1, b=p.
    Thus, b = (a^2-1)/2, c=b+1
 2. a is not odd, a^2 is also not odd,
    then construct (c-b)==2, since a^2 is not odd, we have a^2 = 2*p, then c+b=p, (a^2>=16, p>=8).
